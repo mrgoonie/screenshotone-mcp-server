@@ -51,6 +51,12 @@ npm run dev:cli -- take-screenshot --url "https://example.com" --output screensh
 # Block ads and trackers
 npm run dev:cli -- take-screenshot --url "https://example.com" --block-ads --block-trackers --block-cookie-banners
 
+# ----------------------------------------------
+# UPLOAD SCREENSHOT TO CLOUDFLARE
+# REMEMBER TO SET THE ENVIRONMENT VARIABLES
+# > See example at ".env.example" file
+# ----------------------------------------------
+
 # Take a screenshot and upload it to Cloudflare
 npm run dev:cli -- take-screenshot --url https://example.com --upload
 
