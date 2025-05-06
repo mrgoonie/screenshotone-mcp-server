@@ -68,6 +68,20 @@ function register(program: Command) {
 			(value) => parseInt(value, 10),
 		)
 		.option('--output <path>', 'Path to save the screenshot to')
+		.option(
+			'--upload',
+			'Upload the screenshot to Cloudflare storage',
+			false,
+		)
+		.option(
+			'--upload-filename <filename>',
+			'Filename to use when uploading to storage (without extension)',
+		)
+		.option(
+			'--upload-debug',
+			'Enable debug logging for upload process',
+			false,
+		)
 		.action(async (options) => {
 			const commandLogger = Logger.forContext(
 				'cli/screenshotone.cli.ts',
@@ -104,6 +118,9 @@ function register(program: Command) {
 					block_cookie_banners: options.blockCookieBanners,
 					wait_until: options.waitUntil,
 					delay: options.delay,
+					upload: options.upload,
+					upload_filename: options.uploadFilename,
+					upload_debug: options.uploadDebug,
 				});
 
 				// If output path is provided, save the screenshot to a file
@@ -131,6 +148,23 @@ function register(program: Command) {
 				} else {
 					// Otherwise, output the result to console
 					console.log(result.content);
+
+					// Display upload information if available
+					if (result.info) {
+						console.log(`\n${result.info}`);
+						if (result.metadata?.upload) {
+							const upload = result.metadata.upload;
+							console.log(`\nUpload details:`);
+							console.log(`- Provider: ${upload.provider}`);
+							console.log(`- Path: ${upload.path}`);
+							console.log(`- Public URL: ${upload.publicUrl}`);
+						}
+					}
+
+					// Display error information if available
+					if (result.error) {
+						console.error(`\nError: ${result.error}`);
+					}
 				}
 			} catch (error) {
 				handleCliError(error);

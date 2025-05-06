@@ -9,6 +9,11 @@ import { ControllerResponse } from '../types/common.types.js';
 import { handleControllerError } from '../utils/error-handler.util.js';
 import { ScreenshotOptions } from '../tools/screenshotone.types.js';
 import { config } from '../utils/config.util.js';
+import { env } from '../env';
+import {
+	getCurrentStorage,
+	uploadFileBuffer,
+} from '../libs/cloud-storage/storage-upload.js';
 
 /**
  * @namespace ScreenshotOneController
@@ -139,11 +144,90 @@ async function takeScreenshot(
 			return { content: JSON.stringify(response.data, null, 2) };
 		} else {
 			// For image/binary responses, encode as base64
-			const base64Data = Buffer.from(response.data).toString('base64');
+			const buffer = Buffer.from(response.data);
+			const base64Data = buffer.toString('base64');
 			const mimeType = getMimeType(mergedOptions.format || 'png');
+			const dataUrl = `data:${mimeType};base64,${base64Data}`;
+
+			// Handle upload if requested
+			if (mergedOptions.upload) {
+				try {
+					// Check if Cloudflare credentials are available
+					if (
+						!env.CLOUDFLARE_CDN_ACCESS_KEY ||
+						!env.CLOUDFLARE_CDN_SECRET_KEY
+					) {
+						methodLogger.warn(
+							'Upload requested but Cloudflare credentials are missing',
+						);
+						return {
+							content: dataUrl,
+							error: 'Screenshot taken but upload failed: Cloudflare credentials are missing',
+						};
+					}
+
+					// Generate filename if not provided
+					const timestamp = new Date()
+						.toISOString()
+						.replace(/[:.]/g, '-');
+					const filename = mergedOptions.upload_filename
+						? `${mergedOptions.upload_filename}.${
+								mergedOptions.format || 'png'
+							}`
+						: `screenshot-${timestamp}.${
+								mergedOptions.format || 'png'
+							}`;
+
+					methodLogger.debug(
+						'Uploading screenshot to Cloudflare storage',
+						{
+							filename,
+							format: mergedOptions.format || 'png',
+							debug: mergedOptions.upload_debug || false,
+						},
+					);
+
+					// Upload the file
+					const storage = getCurrentStorage();
+					const uploadResult = await uploadFileBuffer(
+						buffer,
+						filename,
+						{
+							storage,
+							debug: mergedOptions.upload_debug || false,
+						},
+					);
+
+					methodLogger.debug(
+						'Screenshot uploaded successfully',
+						uploadResult,
+					);
+
+					return {
+						content: dataUrl,
+						info: 'Screenshot uploaded successfully',
+						metadata: {
+							upload: uploadResult,
+						},
+					};
+				} catch (uploadError) {
+					methodLogger.error(
+						'Error uploading screenshot:',
+						uploadError,
+					);
+					return {
+						content: dataUrl,
+						error: `Screenshot taken but upload failed: ${
+							uploadError instanceof Error
+								? uploadError.message
+								: 'Unknown error'
+						}`,
+					};
+				}
+			}
 
 			return {
-				content: `data:${mimeType};base64,${base64Data}`,
+				content: dataUrl,
 			};
 		}
 	} catch (error) {

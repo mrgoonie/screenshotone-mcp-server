@@ -20,6 +20,22 @@ export const TakeScreenshotToolArgs = z.object({
 		.describe('HTML content to render and take a screenshot of'),
 	access_key: z.string().optional().describe('Your ScreenshotOne access key'),
 
+	// Upload options
+	upload: z
+		.boolean()
+		.optional()
+		.describe('Upload the screenshot to Cloudflare storage'),
+	upload_filename: z
+		.string()
+		.optional()
+		.describe(
+			'Filename to use when uploading to storage (without extension)',
+		),
+	upload_debug: z
+		.boolean()
+		.optional()
+		.describe('Enable debug logging for upload process'),
+
 	// Format options
 	format: z
 		.enum(['png', 'jpeg', 'webp', 'pdf'])
@@ -174,6 +190,9 @@ export interface ScreenshotOptions {
 	url?: string;
 	html?: string;
 	access_key?: string;
+	upload?: boolean;
+	upload_filename?: string;
+	upload_debug?: boolean;
 	format?: 'png' | 'jpeg' | 'webp' | 'pdf';
 	response_type?: 'by_format' | 'empty' | 'json';
 	viewport_width?: number;
