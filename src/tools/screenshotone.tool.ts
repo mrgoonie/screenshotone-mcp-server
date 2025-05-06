@@ -8,6 +8,26 @@ import { formatErrorForMcpTool } from '../utils/error.util.js';
 import screenshotOneController from '../controllers/screenshotone.controller.js';
 
 /**
+ * Helper function to get the MIME type based on format
+ * @param format The screenshot format
+ * @returns The corresponding MIME type
+ */
+function getMimeType(format: string): string {
+	switch (format.toLowerCase()) {
+		case 'jpeg':
+		case 'jpg':
+			return 'image/jpeg';
+		case 'webp':
+			return 'image/webp';
+		case 'pdf':
+			return 'application/pdf';
+		case 'png':
+		default:
+			return 'image/png';
+	}
+}
+
+/**
  * @function handleTakeScreenshot
  * @description MCP Tool handler to take a screenshot using ScreenshotOne
  * @param {TakeScreenshotToolArgsType} args - Arguments provided to the tool
@@ -74,8 +94,35 @@ async function handleTakeScreenshot(args: TakeScreenshotToolArgsType) {
 		methodLogger.debug(`Got the response from the controller`);
 
 		// Format the response for the MCP tool
+		// First check if we have a successful upload with a Cloudflare URL
+		if (result.metadata?.upload?.publicUrl) {
+			methodLogger.debug(
+				'Returning Cloudflare URL instead of base64 data',
+				{
+					publicUrl: result.metadata.upload.publicUrl,
+				},
+			);
+
+			// Return the Cloudflare URL as a resource type with URI
+			return {
+				content: [
+					{
+						type: 'text' as const,
+						text: `Screenshot uploaded successfully: ${result.metadata.upload.publicUrl}`,
+					},
+					{
+						type: 'resource' as const,
+						resource: {
+							uri: result.metadata.upload.publicUrl,
+							text: 'View Screenshot',
+							mimeType: getMimeType(args.format || 'png'),
+						},
+					},
+				],
+			};
+		}
 		// Check if the result is a base64 image or JSON content
-		if (result.content && result.content.startsWith('data:')) {
+		else if (result.content && result.content.startsWith('data:')) {
 			// It's a base64 image - extract the base64 data and mime type
 			const [dataPart, base64Data] = result.content.split(',');
 			const mimeType = dataPart.split(':')[1].split(';')[0];

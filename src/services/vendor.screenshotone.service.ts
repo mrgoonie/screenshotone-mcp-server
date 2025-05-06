@@ -11,6 +11,29 @@ const BASE_URL = 'https://api.screenshotone.com';
 const TAKE_ENDPOINT = '/take';
 
 /**
+ * Normalizes a URL to ensure it has a protocol prefix
+ * @param url The URL to normalize
+ * @returns The normalized URL with protocol prefix
+ */
+function normalizeUrl(url: string): string {
+	if (!url) return url;
+
+	// Convert to lowercase for consistent handling
+	const lowercaseUrl = url.toLowerCase();
+
+	// Check if URL already has a protocol prefix
+	if (
+		lowercaseUrl.startsWith('http://') ||
+		lowercaseUrl.startsWith('https://')
+	) {
+		return url; // Return original URL with original casing
+	}
+
+	// Add https:// prefix
+	return `https://${url}`;
+}
+
+/**
  * @namespace ScreenshotOneService
  * @description Service responsible for making requests to the ScreenshotOne API
  */
@@ -38,6 +61,12 @@ async function takeScreenshot(
 			...options,
 			access_key: '[REDACTED]',
 		});
+
+		// Normalize URL if present
+		if (options.url) {
+			options.url = normalizeUrl(options.url);
+			methodLogger.debug('Using normalized URL:', { url: options.url });
+		}
 
 		// Determine if we should use GET or POST based on options
 		// If HTML is provided, we must use POST
