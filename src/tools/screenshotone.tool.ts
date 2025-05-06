@@ -123,8 +123,7 @@ function register(server: McpServer) {
 		`Takes a screenshot of a webpage or HTML content using ScreenshotOne.
 Requires either a URL or HTML content, and your ScreenshotOne access key.
 Returns the screenshot as an image or JSON with metadata.
-Supports a wide range of customization options including viewport size, format, selectors, and more.
-Create your ScreenshotOne access key at https://dash.screenshotone.com/sign-up`,
+Supports a wide range of customization options including viewport size, format, selectors, and more.`,
 		TakeScreenshotToolArgs.shape,
 		handleTakeScreenshot,
 	);
