@@ -10,7 +10,8 @@ import screenshotOneCli from './screenshotone.cli.js';
  */
 
 // Package description
-const DESCRIPTION = 'A Model Context Protocol (MCP) server for ScreenshotOne';
+const DESCRIPTION =
+	'A Model Context Protocol (MCP) server for ScreenshotOne, to help AI assistants take screenshots of webpages';
 
 /**
  * Run the CLI with the provided arguments
