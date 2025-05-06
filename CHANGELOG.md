@@ -1,3 +1,11 @@
+## [1.0.4](https://github.com/mrgoonie/screenshotone-mcp-server/compare/v1.0.3...v1.0.4) (2025-05-06)
+
+
+### Bug Fixes
+
+* **server:** list tools lost session id ([31e4ea1](https://github.com/mrgoonie/screenshotone-mcp-server/commit/31e4ea195c178840865f5b5d886bbccd4d49a974))
+* **server:** send headers before request handling ([d0a8d39](https://github.com/mrgoonie/screenshotone-mcp-server/commit/d0a8d39cc3934835a51597314928d13e486a9576))
+
 ## [1.0.3](https://github.com/mrgoonie/screenshotone-mcp-server/compare/v1.0.2...v1.0.3) (2025-05-06)
 
 
