@@ -3,6 +3,7 @@ import { Logger } from '../utils/logger.util.js';
 import screenshotOneController from '../controllers/screenshotone.controller.js';
 import { handleCliError } from '../utils/error.util.js';
 import { config } from '../utils/config.util.js';
+import { env } from '../env.js';
 
 /**
  * Register ScreenshotOne CLI commands
@@ -71,7 +72,7 @@ function register(program: Command) {
 		.option(
 			'--upload',
 			'Upload the screenshot to Cloudflare storage',
-			false,
+			env.CLOUDFLARE_CDN_ACCESS_KEY && env.CLOUDFLARE_CDN_SECRET_KEY,
 		)
 		.option(
 			'--upload-filename <filename>',

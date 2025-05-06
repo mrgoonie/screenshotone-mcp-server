@@ -70,6 +70,18 @@ async function takeScreenshot(
 		// Merge options with defaults
 		const mergedOptions = { ...defaultOptions, ...options };
 
+		// Set upload to true by default if Cloudflare credentials are available and upload wasn't explicitly set to false
+		if (
+			mergedOptions.upload === undefined &&
+			env.CLOUDFLARE_CDN_ACCESS_KEY &&
+			env.CLOUDFLARE_CDN_SECRET_KEY
+		) {
+			mergedOptions.upload = true;
+			methodLogger.debug(
+				'Setting upload to true by default as Cloudflare credentials are available',
+			);
+		}
+
 		// Ensure response_type is valid - handle legacy 'image' value
 		if (
 			mergedOptions.response_type &&
