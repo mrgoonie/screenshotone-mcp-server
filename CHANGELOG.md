@@ -1,3 +1,11 @@
+## [1.0.5](https://github.com/mrgoonie/screenshotone-mcp-server/compare/v1.0.4...v1.0.5) (2025-05-06)
+
+
+### Bug Fixes
+
+* **tool:** update description ([b664461](https://github.com/mrgoonie/screenshotone-mcp-server/commit/b664461adf65cc1e3f6ea1bcdf2ac0ddd1fcbde6))
+* **tool:** upload as default if env vars are set ([1882ab3](https://github.com/mrgoonie/screenshotone-mcp-server/commit/1882ab33e7d1c7248c32800866f22c6a0a8e31f6))
+
 ## [1.0.4](https://github.com/mrgoonie/screenshotone-mcp-server/compare/v1.0.3...v1.0.4) (2025-05-06)
 
 
