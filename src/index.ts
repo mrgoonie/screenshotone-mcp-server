@@ -140,15 +140,22 @@ export async function startServer(mode: 'stdio' | 'http' = 'stdio') {
 					}
 
 					const eventStore = new InMemoryEventStore();
+					let newSessionId: string | null = null;
 					transport = new StreamableHTTPServerTransport({
-						sessionIdGenerator: () => randomUUID(),
+						sessionIdGenerator: () => {
+							newSessionId = randomUUID();
+							return newSessionId;
+						},
 						eventStore, // Enable resumability
-						onsessioninitialized: (newSessionId) => {
+						onsessioninitialized: (sessionId) => {
 							// Store the transport by session ID when session is initialized
 							serverLogger.info(
-								`[Express] Session initialized with ID: ${newSessionId}`,
+								`[Express] Session initialized with ID: ${sessionId}`,
 							);
-							transports[newSessionId] = transport;
+							transports[sessionId] = transport;
+
+							// Set the session ID in the response headers
+							res.setHeader('mcp-session-id', sessionId);
 						},
 					});
 
@@ -188,6 +195,14 @@ export async function startServer(mode: 'stdio' | 'http' = 'stdio') {
 
 				// Handle the request with the transport
 				await transport.handleRequest(req, res, req.body);
+
+				// If this is a new transport and we have a session ID, make sure it's in the response headers
+				if (transport.sessionId && !res.getHeader('mcp-session-id')) {
+					res.setHeader('mcp-session-id', transport.sessionId);
+					serverLogger.info(
+						`[Express] Added session ID to response headers: ${transport.sessionId}`,
+					);
+				}
 			} catch (error) {
 				serverLogger.error(
 					'[Express] Error handling MCP request:',
