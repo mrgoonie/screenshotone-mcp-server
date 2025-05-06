@@ -1,6 +1,6 @@
 {
 	"name": "screenshotone-mcp-server",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "TypeScript Model Context Protocol (MCP) server for ScreenshotOne. Includes CLI support and extensible structure for connecting AI systems (LLMs) to ScreenshotOne API",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",

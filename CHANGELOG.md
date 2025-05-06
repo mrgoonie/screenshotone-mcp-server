@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/mrgoonie/screenshotone-mcp-server/compare/v1.0.2...v1.0.3) (2025-05-06)
+
+
+### Bug Fixes
+
+* **server:** create session id if not found ([47378ef](https://github.com/mrgoonie/screenshotone-mcp-server/commit/47378ef338ed8608fecf4a0e359a46ccdf2cce15))
+
 ## [1.0.2](https://github.com/mrgoonie/screenshotone-mcp-server/compare/v1.0.1...v1.0.2) (2025-05-06)
 
 
