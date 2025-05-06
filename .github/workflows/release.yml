@@ -1,15 +1,15 @@
 name: Release
 
 on:
-  pull_request:
+  # Run on pushes to main branch (after PR is merged)
+  push:
     branches: [main]
-    types: [closed]
+  # Also run on workflow_dispatch to manually trigger
+  workflow_dispatch:
 
 jobs:
   release:
     name: Create Release
-    # Only run when PR is merged (not just closed)
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions:
       contents: write  # Needed for creating releases
@@ -21,6 +21,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Important for semantic-release to analyze all commits
+          token: ${{ secrets.PAT }}  # Use PAT for checkout to enable pushing
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -37,22 +38,13 @@ jobs:
       - name: Set executable permissions
         run: chmod +x dist/index.js || true
       
+      - name: Configure Git
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+      
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          # Configure git
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          
-          # Run semantic-release to create GitHub release
-          npx semantic-release
-          
-          # Comment on the PR with release info if a new version was created
-          if [ $? -eq 0 ]; then
-            VERSION=$(grep '"version":' package.json | sed 's/.*"version": "\(.*\)".*/\1/')
-            if [ -n "$VERSION" ]; then
-              gh pr comment ${{ github.event.pull_request.number }} --body "🎉 Release v$VERSION has been created! See the [release notes](https://github.com/${{ github.repository }}/releases/tag/v$VERSION) for details."
-            fi
-          fi
+        run: npx semantic-release
