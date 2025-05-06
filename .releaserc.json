@@ -7,7 +7,7 @@
 		[
 			"@semantic-release/exec",
 			{
-				"prepareCmd": "node scripts/update-version.js ${nextRelease.version} && npm run build && chmod +x dist/index.js"
+				"prepareCmd": "node scripts/update-version.js ${nextRelease.version} && npm run build && chmod +x dist/index.js || true"
 			}
 		],
 		[
@@ -32,7 +32,13 @@
 		[
 			"@semantic-release/github",
 			{
-				"successComment": "This PR is part of the release [v${nextRelease.version}](https://github.com/mrgoonie/screenshotone-mcp-server/releases/tag/v${nextRelease.version})",
+				"assets": [
+					{
+						"path": "dist/**",
+						"label": "Distribution"
+					}
+				],
+				"successComment": "🎉 This PR is part of the release [v${nextRelease.version}](https://github.com/mrgoonie/screenshotone-mcp-server/releases/tag/v${nextRelease.version})",
 				"failTitle": "The automated release failed",
 				"failComment": "The automated release from this PR failed. Please check the logs for more details."
 			}
