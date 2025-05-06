@@ -76,4 +76,22 @@ export interface ControllerResponse {
 	 * If present, indicates that more results are available.
 	 */
 	pagination?: ResponsePagination;
+
+	/**
+	 * Optional error message to be displayed to the user.
+	 * Used when an operation fails but can still return some content.
+	 */
+	error?: string;
+
+	/**
+	 * Optional informational message to be displayed to the user.
+	 * Used for success messages or additional context.
+	 */
+	info?: string;
+
+	/**
+	 * Optional metadata about the response.
+	 * Can contain any additional data that might be useful for the client.
+	 */
+	metadata?: Record<string, any>;
 }
