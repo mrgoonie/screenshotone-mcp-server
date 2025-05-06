@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/mrgoonie/screenshotone-mcp-server/compare/v1.0.1...v1.0.2) (2025-05-06)
+
+
+### Bug Fixes
+
+* **release:** update GitHub release configuration ([b087f95](https://github.com/mrgoonie/screenshotone-mcp-server/commit/b087f9546a841bc125dcba6fa0a3479a37cf17b1))
+
 ## [1.0.1](https://github.com/mrgoonie/screenshotone-mcp-server/compare/v1.0.0...v1.0.1) (2025-05-06)
 
 
