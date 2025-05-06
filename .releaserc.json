@@ -29,7 +29,8 @@
 			"@semantic-release/npm",
 			{
 				"npmPublish": true,
-				"pkgRoot": "."
+				"pkgRoot": ".",
+				"tarballDir": "dist"
 			}
 		],
 		[
@@ -49,10 +50,17 @@
 			{
 				"assets": [
 					{
-						"path": "dist/**",
-						"label": "Distribution"
+						"path": "dist/index.js",
+						"label": "Main Executable"
+					},
+					{
+						"path": "dist/index.d.ts",
+						"label": "Type Definitions"
 					}
 				],
+				"addReleases": "bottom",
+				"releaseNameTemplate": "Release v${nextRelease.version}",
+				"releaseTitleTemplate": "Release v${nextRelease.version}",
 				"successComment": "🎉 This PR is part of the release [v${nextRelease.version}](https://github.com/mrgoonie/screenshotone-mcp-server/releases/tag/v${nextRelease.version})",
 				"failTitle": "The automated release failed",
 				"failComment": "The automated release from this PR failed. Please check the logs for more details."
