@@ -122,11 +122,23 @@ export async function startServer(mode: 'stdio' | 'http' = 'stdio') {
 						`[Express] Reusing existing transport for session ${sessionId}`,
 					);
 					transport = transports[sessionId];
-				} else if (!sessionId && isInitializeRequest(req.body)) {
-					// New initialization request
-					serverLogger.info(
-						'[Express] Handling new initialization request',
-					);
+				} else {
+					// Either no session ID or invalid session ID provided
+					// Create a new transport with a new session ID
+					if (sessionId) {
+						serverLogger.warn(
+							`[Express] Invalid session ID provided: ${sessionId}, creating new session`,
+						);
+					} else if (isInitializeRequest(req.body)) {
+						serverLogger.info(
+							'[Express] Handling new initialization request',
+						);
+					} else {
+						serverLogger.warn(
+							'[Express] No session ID provided, creating new session',
+						);
+					}
+
 					const eventStore = new InMemoryEventStore();
 					transport = new StreamableHTTPServerTransport({
 						sessionIdGenerator: () => randomUUID(),
@@ -172,21 +184,6 @@ export async function startServer(mode: 'stdio' | 'http' = 'stdio') {
 						});
 						return;
 					}
-				} else {
-					// Invalid request - no session ID or not initialization request
-					serverLogger.warn(
-						'[Express] Invalid request - no valid session ID provided',
-					);
-					res.status(400).json({
-						jsonrpc: '2.0',
-						error: {
-							code: -32000,
-							message:
-								'Bad Request: No valid session ID provided',
-						},
-						id: null,
-					});
-					return;
 				}
 
 				// Handle the request with the transport
