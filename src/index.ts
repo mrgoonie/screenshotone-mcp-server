@@ -193,16 +193,21 @@ export async function startServer(mode: 'stdio' | 'http' = 'stdio') {
 					}
 				}
 
-				// Handle the request with the transport
-				await transport.handleRequest(req, res, req.body);
-
 				// If this is a new transport and we have a session ID, make sure it's in the response headers
-				if (transport.sessionId && !res.getHeader('mcp-session-id')) {
+				// Do this BEFORE handling the request to ensure headers can be set
+				if (
+					transport.sessionId &&
+					!res.getHeader('mcp-session-id') &&
+					!res.headersSent
+				) {
 					res.setHeader('mcp-session-id', transport.sessionId);
 					serverLogger.info(
 						`[Express] Added session ID to response headers: ${transport.sessionId}`,
 					);
 				}
+
+				// Handle the request with the transport
+				await transport.handleRequest(req, res, req.body);
 			} catch (error) {
 				serverLogger.error(
 					'[Express] Error handling MCP request:',
