@@ -1,3 +1,11 @@
+## [1.0.6](https://github.com/mrgoonie/screenshotone-mcp-server/compare/v1.0.5...v1.0.6) (2025-05-06)
+
+
+### Bug Fixes
+
+* **tool:** normalize url with auto protocol prefix ([7da3110](https://github.com/mrgoonie/screenshotone-mcp-server/commit/7da31107f8f07f453452f0587931a22c7ff229e9))
+* **tool:** upload to cloudflare as default ([793ed1e](https://github.com/mrgoonie/screenshotone-mcp-server/commit/793ed1efead5f699ee6044606e9215f8a134c976))
+
 ## [1.0.5](https://github.com/mrgoonie/screenshotone-mcp-server/compare/v1.0.4...v1.0.5) (2025-05-06)
 
 
