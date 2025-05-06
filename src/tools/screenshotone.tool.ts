@@ -121,8 +121,8 @@ function register(server: McpServer) {
 	server.tool(
 		'take_screenshot',
 		`Takes a screenshot of a webpage or HTML content using ScreenshotOne.
-Requires either a URL or HTML content, and your ScreenshotOne access key.
-Returns the screenshot as an image or JSON with metadata.
+Requires either a URL or HTML content.
+Returns the screenshot as an image, an URL or JSON with metadata.
 Supports a wide range of customization options including viewport size, format, selectors, and more.`,
 		TakeScreenshotToolArgs.shape,
 		handleTakeScreenshot,
