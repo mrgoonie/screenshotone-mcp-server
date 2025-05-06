@@ -118,14 +118,14 @@ async function takeScreenshot(
 					const jsonString = data.toString('utf-8');
 					const parsedData = JSON.parse(jsonString);
 					methodLogger.error('Decoded error response:', parsedData);
-					
+
 					if (parsedData.error_message) {
 						errorMessage = parsedData.error_message;
 					}
 					if (parsedData.error_code) {
 						errorCode = parsedData.error_code;
 					}
-					
+
 					// Include detailed error information if available
 					if (
 						parsedData.error_details &&
@@ -141,7 +141,9 @@ async function takeScreenshot(
 						'Failed to parse error response buffer',
 						parseError,
 					);
-					errorMessage = `ScreenshotOne API error: ${data.toString('utf-8')}`;
+					errorMessage = `ScreenshotOne API error: ${data.toString(
+						'utf-8',
+					)}`;
 				}
 			} else if (data && typeof data === 'object') {
 				if (data.error) {
@@ -149,7 +151,9 @@ async function takeScreenshot(
 					errorCode = data.error.code || errorCode;
 				} else {
 					// Try to extract error message from the response data itself
-					errorMessage = `ScreenshotOne API error: ${JSON.stringify(data)}`;
+					errorMessage = `ScreenshotOne API error: ${JSON.stringify(
+						data,
+					)}`;
 				}
 			}
 
