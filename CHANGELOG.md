@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/mrgoonie/screenshotone-mcp-server/compare/v1.0.0...v1.0.1) (2025-05-06)
+
+
+### Bug Fixes
+
+* **release:** configure semantic-release to properly create versioned releases ([0b65f0a](https://github.com/mrgoonie/screenshotone-mcp-server/commit/0b65f0a9e88470ec8df7ddf8595f4e84785dcf56))
+
 # 1.0.0 (2025-05-06)
 
 
