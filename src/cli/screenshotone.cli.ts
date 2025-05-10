@@ -16,7 +16,7 @@ function register(program: Command) {
 	// Take Screenshot Command
 	program
 		.command('take-screenshot')
-		.description('Take a screenshot of a webpage using ScreenshotOne')
+		.description('Take a screenshot of a webpage')
 		.option('--url <url>', 'URL of the webpage to take a screenshot of')
 		.option(
 			'--html <html>',
