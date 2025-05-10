@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/mrgoonie/screenshotone-mcp-server/compare/v1.0.6...v1.0.7) (2025-05-10)
+
+
+### Bug Fixes
+
+* **server:** remove tool name in desc ([dc2850e](https://github.com/mrgoonie/screenshotone-mcp-server/commit/dc2850e73816e0def94684d678b60284e060904a))
+
 ## [1.0.6](https://github.com/mrgoonie/screenshotone-mcp-server/compare/v1.0.5...v1.0.6) (2025-05-06)
 
 
