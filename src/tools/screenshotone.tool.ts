@@ -167,9 +167,9 @@ function register(server: McpServer) {
 	// Register take screenshot tool
 	server.tool(
 		'take_screenshot',
-		`Takes a screenshot of a webpage or HTML content using ScreenshotOne.
+		`Takes a screenshot of a webpage or HTML content.
 Requires either a URL or HTML content.
-Returns the screenshot as an image, an URL or JSON with metadata.
+Returns the screenshot as an URL (default), an image or JSON with metadata.
 Supports a wide range of customization options including viewport size, format, selectors, and more.`,
 		TakeScreenshotToolArgs.shape,
 		handleTakeScreenshot,

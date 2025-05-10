@@ -488,7 +488,7 @@ When ready to publish your custom MCP server:
 	"screenshotone": {
 		"environments": {
 			"DEBUG": "true",
-			"SCREENSHOTONE_API_KEY": "value"
+			"SCREENSHOTONE_ACCESS_KEY": "value"
 		}
 	}
 }
